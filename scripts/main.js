@@ -35,7 +35,7 @@ function sleep(ms) {
     app.stage.addChild(container);
 
 
-    const house = new House(floors, null, app, FPS); // тимчасово null
+    const house = new House(floors, null, app, FPS);
 
     const elevator = new Elevator(
       capacity,
@@ -44,10 +44,9 @@ function sleep(ms) {
       elevatorHeight,
       app,
       elevatorDelayMs,
-      house // ✅ передаємо
+      house
     );
 
-    // потім оновлюємо house
     house.elevator = elevator;
 
     house.init()

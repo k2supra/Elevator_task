@@ -29,12 +29,10 @@ export class Elevator {
     this.elevator.drawRect(0, 0, this.elevatorWidth, this.elevatorHeight);
     this.elevator.endFill();
 
-    // Y-координата (app.screen.height - elevatorHeight) розмістить його на самому низу
-    // X-координата (0) розмістить його зліва
+
     this.elevator.x = 0 + this.elevatorWidth; // Зліва
     this.elevator.y = this.app.screen.height - this.elevatorHeight * 2; // Знизу
 
-    // Додаємо ліфт до сцени (або до контейнера, якщо ти хочеш його групувати)
     this.app.stage.addChild(this.elevator);
   }
   updatePosition()
@@ -48,7 +46,6 @@ export class Elevator {
     
   }
   async moveTo(targetFloor) {
-    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
     if (targetFloor === this.currentFloor) {
       await this.loadUnloadPeople();
       return;
@@ -57,25 +54,8 @@ export class Elevator {
 
 
 
-    // Рекурсивна функція кроку
     const step = async () => {
 
-      // await new Promise((resolve)=>
-      // {
-      //   const step = (this.elevatorHeight * applier) / this.FPS;
-      //     let counter = 1;
-      //     let interval = setInterval(()=>
-      //     {
-      //       this.elevator.y -= step;
-      //       this.currentFloor += applier;
-      //       counter++;
-      //       if (counter === 30) {
-      //         // this.leftPos = this.person.x;
-      //         clearInterval(interval);
-      //         resolve();
-      //       }
-      //     }, 1000 / this.FPS)
-      // })
       await new Promise((res) => setTimeout(res, this.speedPerFloor * 1000));
       
       this.elevator.y -= this.elevatorHeight * applier;
@@ -91,19 +71,14 @@ export class Elevator {
             const lastTarget = this.loadedPeople[this.loadedPeople.length - 1].targetFloor;
             await this.moveTo(lastTarget);
           
-            // 3. Вивантажити
             await this.loadUnloadPeople("unload");
           }
-        
-        // await this.moveTo()
         return;
       }
 
-      // Затримка між поверхами
-      //   await new Promise(res => setTimeout(res, this.speedPerFloor * 1000));
-      await step(); // рекурсивно викликаємо далі
+      await step();
     };
-    await step(); // запускаємо
+    await step();
   }
 
   async loadUnloadPeople(load = "load") {
@@ -122,7 +97,7 @@ export class Elevator {
         const person = this.house.removePerson(this.currentFloor);
         if (person) {
           this.loadedPeople.push(person);
-          await person.move("load"); // обов’язково await
+          await person.move("load");
           if (this.house.floors[this.currentFloor].length > 0) {
             for (let i = 0; i < this.house.floors[this.currentFloor].length; i++) {
               const nextPerson = this.house.floors[this.currentFloor][i];
@@ -152,10 +127,6 @@ export class Elevator {
     const applier = targetFloor > this.currentFloor ? 1 : -1;
   
     while (this.currentFloor !== targetFloor) {
-      // await new Promise((res) => setTimeout(res, this.speedPerFloor * 1000));
-      // this.elevator.y -= this.elevatorHeight * applier;
-      // this.currentFloor += applier;
-      // this.updatePosition();
       
       await new Promise((resolve)=>
       {
@@ -179,15 +150,15 @@ export class Elevator {
     console.log(`Arrived on floor ${targetFloor}`);
   }
   async unloadAllPeople() {
-    // Збираємо всі унікальні поверхи, куди треба пасажирам
+
     const targets = [...new Set(this.loadedPeople.map(p => p.targetFloor))];
   
-    // Сортуємо за напрямком руху (від поточного)
+
     targets.sort((a, b) => Math.abs(this.currentFloor - a) - Math.abs(this.currentFloor - b));
   
     for (const floor of targets) {
-      await this.moveOnlyTo(floor);           // рух без load/unload
-      await this.loadUnloadPeople("unload");  // вивантажити тих, хто тут
+      await this.moveOnlyTo(floor);
+      await this.loadUnloadPeople("unload");
     }
   }
   async moveTo(floorToPickUp) {

@@ -22,7 +22,6 @@ export class Person {
     let person = new Graphics()
     .drawRect(0, 0, this.personWidth, this.personHeight).fill(this.color) // width, height
     person.x = this.app.screen.width - this.personWidth * 2;
-    // person.y = this.app.screen.height - this.personHeight - this.house.floorHeight - (this.house.lineWidth * 2) - (this.currentFloor * this.personHeight)
     person.y = this.app.canvas.height - (this.house.floorHeight * (this.currentFloor + 1)) - this.personHeight - this.house.lineWidth * 2
 
     this.app.stage.addChild(person);
@@ -42,7 +41,6 @@ export class Person {
             this.person.x -= step;
             counter++;
             if (counter === 30) {
-              // this.leftPos = this.person.x;
               clearInterval(interval);
               if (this.house.floors[this.currentFloor].length === 1) {
                 this.callAnElevator()
@@ -51,17 +49,6 @@ export class Person {
               this.isReady = true;
             }
           }, 1000 / this.FPS)
-          // setTimeout(()=>
-          //   {
-          //     this.person.x = 100 + ((this.house.floors[this.currentFloor].length - 1) * (this.personWidth * 2));
-          //     this.leftPos = this.person.x;
-          //     if (this.house.floors[this.currentFloor].length === 1) {
-          //       this.callAnElevator()
-          //     }
-          //     resolve();
-          //     this.isReady = true;
-          //   }, 1000)
-        
         })
     }
     else if (align === "right") {
@@ -73,7 +60,6 @@ export class Person {
             this.person.x -= step;
             counter++;
             if (counter === 30) {
-              // this.leftPos = this.person.x;
               clearInterval(interval);
               setTimeout(() => {
                 this.person.alpha = 0;
@@ -82,13 +68,6 @@ export class Person {
               this.isReady = true;
             }
           }, 1000 / this.FPS)
-        // setTimeout(() => {
-        //   this.person.x = this.app.screen.width - this.personWidth * 2;
-        //   setTimeout(() => {
-        //     this.person.alpha = 0;
-        //     resolve();
-        //   }, 1000);
-        // }, 1000);
         
       });
     }
@@ -141,16 +120,5 @@ export class PersonManager {
     
     
     await person.move("left");
-    // const randomCurrentFloor = Math.floor(Math.random() * this.floors);
-    // let randomTargetFloor = randomCurrentFloor;
-    // do
-    // {
-    //     randomTargetFloor = Math.floor(Math.random() * this.floors);
-    // }
-    // while (randomTargetFloor === randomCurrentFloor);
-    // const person = new Person(randomCurrentFloor, randomTargetFloor, this.house)
-    // this.house.addPerson(randomCurrentFloor, person);
-    // person.info();
-    // person.callAnElevator()
   }
 }

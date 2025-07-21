@@ -46,7 +46,6 @@ export class House {
     
         this.isElevatorBusy = false;
     
-        // Продовжуємо обслуговування черги
         this.processQueue();
       }
     callAnElevator(floor) {
